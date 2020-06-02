@@ -17,13 +17,17 @@ import os
 class Ui_MainWindow(object):
     def __init__(self):
         self.busy = False
-    def getLink(self, searchText):
+
+    def getLink(self, searchText): 
+        ''' fetches the YouTube URL for the search text. 
+            If success, returns a string
+            else returns None.'''
         try:
             searchText = searchText.replace(" ", "+")
             url = "https://www.youtube.com/results?search_query=" + searchText
             response = urllib.request.urlopen(url)
             html = response.read()
-            soup = BeautifulSoup(html, "html")
+            soup = BeautifulSoup(html, "html") # html content of the webpage
             tags = soup.findAll('img')
             for tag in tags:
                 if tag['src'][:5] == "https":
@@ -43,7 +47,10 @@ class Ui_MainWindow(object):
             message = "Something unexpected happened. Try again."
             self.message_box.appendPlainText(message)
             return None
+    
     def download(self, searchText, savePath, fileFormat):
+        # downloads the YouTube video and saves it at savePath.
+        
         if self.busy:
             message = "Another file is downloading. Please try later"
             self.message_box.appendPlainText(message)
@@ -73,6 +80,7 @@ class Ui_MainWindow(object):
             self.message_box.appendPlainText("Something unexpected happened. Try again.")
         finally:
             self.busy = False
+    
     def initiate(self):
         searchText = self.search_textbox.text().strip()
         savePath = self.dir_textbox.text().strip()
@@ -84,6 +92,7 @@ class Ui_MainWindow(object):
             self.message_box.appendPlainText("Enter a valid save path.")
         else:
             self.download(searchText, savePath, fileFormat)
+    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(393, 420)
