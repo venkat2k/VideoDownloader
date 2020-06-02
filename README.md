@@ -16,6 +16,7 @@ VideoDownloader is a Python based GUI application that is used to download video
 ## How it works?
 - We append the search text to the YouTube URL and use WebScraping to fetch the URL of the first video from the results.
 - Once we have the URL, the video is downloaded using pytube library. 
+- The fron-end is handled by PyQt5
 
 ## Note
 - This was not created for commercial use, as it could be used to download copyrighted content. It is just a fun project.
