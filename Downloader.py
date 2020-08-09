@@ -12,7 +12,7 @@ import urllib.request
 from pytube import YouTube
 from bs4 import BeautifulSoup
 import os
-
+import re
 
 class Ui_MainWindow(object):
     def __init__(self):
@@ -28,16 +28,15 @@ class Ui_MainWindow(object):
             response = urllib.request.urlopen(url)
             html = response.read()
             soup = BeautifulSoup(html, "html") # html content of the webpage
-            tags = soup.findAll('img')
-            for tag in tags:
-                if tag['src'][:5] == "https":
-                    videoID = tag['src'][23:34]
-                    break
+            tags = str(soup.findAll('script'))
+            ind = re.search("videoId", tags).span()[1]
+            videoID = tags[ind + 3: ind + 14]
             link = "https://www.youtube.com/watch?v=" + videoID
             return link
         except UnboundLocalError:
             message = "The specified video could not be downloaded. Try a different video."
             self.message_box.appendPlainText(message)
+            print("here")
             return None
         except urllib.error.URLError:
             message = "Check your internet connection and try again."
